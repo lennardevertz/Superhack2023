@@ -10,7 +10,7 @@ Elevate your streamer adventure with PlayPal: your partner for earning crypto re
 </div>
 
 ## Example
-
+...
 ## Challenges
 
 ## Tech Stack
