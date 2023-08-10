@@ -64,9 +64,16 @@ document.addEventListener("DOMContentLoaded", function() {
         console.log("Selected token:", selectedToken);
     });
 
+    let walletConnected = false;
+
     connectWalletButton.addEventListener("click", function(event) {
-        console.log("Connecting wallet")
-        connectWallet();
+        if (walletConnected) {
+            disconnectWallet();
+            walletConnected = false;
+        } else {
+            connectWallet();
+            walletConnected = true;
+        }
     });
 
     let abiPlayPal = [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"recipientAddress","type":"address"},{"indexed":false,"internalType":"string","name":"message","type":"string"},{"indexed":true,"internalType":"address","name":"sender","type":"address"},{"indexed":true,"internalType":"address","name":"tokenAddress","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"DonationSent","type":"event"},{"inputs":[{"internalType":"address","name":"_streamer","type":"address"},{"internalType":"string","name":"_message","type":"string"}],"name":"donate","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"address","name":"_streamer","type":"address"},{"internalType":"uint256","name":"_assetId","type":"uint256"},{"internalType":"uint256","name":"_amount","type":"uint256"},{"internalType":"address","name":"_nftAddress","type":"address"},{"internalType":"string","name":"_message","type":"string"}],"name":"donateERC1155","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"address","name":"_streamer","type":"address"},{"internalType":"uint256","name":"_assetId","type":"uint256"},{"internalType":"address","name":"_nftAddress","type":"address"},{"internalType":"string","name":"_message","type":"string"}],"name":"donateERC721","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"address","name":"_streamer","type":"address"},{"internalType":"uint256","name":"_amount","type":"uint256"},{"internalType":"address","name":"_tokenAddr","type":"address"},{"internalType":"string","name":"_message","type":"string"}],"name":"donateToken","outputs":[],"stateMutability":"payable","type":"function"}];
@@ -106,6 +113,15 @@ document.addEventListener("DOMContentLoaded", function() {
         let accounts = await web3.eth.getAccounts();
         connectedAccount = accounts[0]
         console.log(connectedAccount)
+        connectWalletButton.textContent = "Disconnect " + connectedAccount.substring(0, 6).concat("...").concat(connectedAccount.substr(-4));
+
+    }
+
+    async function disconnectWallet() {
+        provider = null;
+        web3 = null;
+        connectedAccount = ""
+        connectWalletButton.textContent = "Connect Wallet";
 
     }
 
