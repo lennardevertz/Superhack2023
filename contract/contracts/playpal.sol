@@ -17,7 +17,8 @@ contract PlayPal {
         address indexed recipientAddress,
         string message,
         address indexed sender,
-        address indexed tokenAddress
+        address indexed tokenAddress,
+        uint256 amount
     );
 
     /** Probably delete **/
@@ -33,7 +34,7 @@ contract PlayPal {
         (bool sent, ) = payable(_streamer).call{value: msg.value}("");
         require(sent, "Failed to send");
 
-        emit DonationSent(_streamer, _message, msg.sender, address(0));
+        emit DonationSent(_streamer, _message, msg.sender, address(0), msg.value);
     }
 
 
@@ -49,7 +50,7 @@ contract PlayPal {
         bool sent = token.transferFrom(msg.sender, _streamer, _amount);
         require(sent, "Failed to transfer token");
 
-        emit DonationSent(_streamer, _message, msg.sender, _tokenAddr);
+        emit DonationSent(_streamer, _message, msg.sender, _tokenAddr, _amount);
     }
 
 
@@ -63,7 +64,7 @@ contract PlayPal {
         IERC721 nft = IERC721(_nftAddress);
         nft.safeTransferFrom(msg.sender, _streamer, _assetId, "");
 
-        emit DonationSent(_streamer, _message, msg.sender, _nftAddress);
+        emit DonationSent(_streamer, _message, msg.sender, _nftAddress, 1);
     }
 
 
@@ -78,7 +79,7 @@ contract PlayPal {
         IERC1155 nft = IERC1155(_nftAddress);
         nft.safeTransferFrom(msg.sender, _streamer, _assetId, _amount, "");
 
-        emit DonationSent(_streamer, _message, msg.sender, _nftAddress);
+        emit DonationSent(_streamer, _message, msg.sender, _nftAddress, _amount);
     }
 
 }

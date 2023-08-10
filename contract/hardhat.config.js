@@ -12,13 +12,11 @@ module.exports = {
     'base-mainnet': {
       url: 'https://mainnet.base.org',
       accounts: [""],
-      gasPrice: 1000000000,
     },
     // for testnet
     'base-goerli': {
       url: 'https://goerli.base.org',
       accounts: [""],
-      gasPrice: 1000000000,
     },
   },
   etherscan: {
