@@ -1,7 +1,7 @@
 <br/>
 <div align="center">
   <a>
-    <img src="logo.png" width="350">
+    <img src="./img/logo.png" width="350">
   </a>
   <h3 align="center">PlayPal</h3>
   <p align="center">
