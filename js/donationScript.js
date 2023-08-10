@@ -32,7 +32,6 @@ document.addEventListener("DOMContentLoaded", function() {
     const connectWalletButton = document.getElementById("connectWalletButton");
 
     if (networkParams.length > 0) {
-        // Clear existing options and add options based on network parameter
         networkSelect.innerHTML = '';
         networkParamsArray.forEach(network => {
             const option = document.createElement("option");
@@ -43,7 +42,6 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     if (tokenParams.length > 0) {
-        // Clear existing options and add options based on token parameter
         tokenSelect.innerHTML = '';
         tokenParamsArray.forEach(token => {
             const option = document.createElement("option");
@@ -87,6 +85,11 @@ document.addEventListener("DOMContentLoaded", function() {
         "0xb23d80f5fefcddaa212212f028021b41ded428cf": ["echelon-prime", 18],
     };
 
+    let tokenAddresses = {
+        ETH: "0x0000000000000000000000000000000000000000",
+        PRIME: "0xb23d80f5fefcddaa212212f028021b41ded428cf"
+    }
+
 
     async function loadPlayPal(web3, contractAddr) {
         return await new web3.eth.Contract(abiPlayPal, contractAddr);
@@ -128,8 +131,10 @@ document.addEventListener("DOMContentLoaded", function() {
     async function sendDonation() {
         let message = document.getElementById("message").value;
         let amount = document.getElementById('amount').value;
-        let token = document.getElementById('token').value;
-        let assetId = document.getElementById('assetId').value;
+        let tokenAddress = tokenAddresses[token];
+        // use for future nft implementation
+        // let assetId = document.getElementById('assetId').value;
+        let assetId;
 
         let {
             integer: amountInteger,
