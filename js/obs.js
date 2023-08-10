@@ -28,8 +28,8 @@ async function loadPlayPalContracts() {
 }
 
 async function setCurrBlock() {
-    // currBlockBase = await web3Base.eth.getBlockNumber();
-    currBlockBase = 8235798 ;
+    currBlockBase = await web3Base.eth.getBlockNumber();
+    // currBlockBase = 8235798 ;
 }
 
 // ignore erc721 for now
