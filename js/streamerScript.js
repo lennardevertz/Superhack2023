@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", function() {
             coinError.classList.add("hidden");
         }
         
-        const obsUrl = `/obs?streamerAddress=${walletAddressInput.value}`;
+        const obsUrl = `https://lennardevertz.github.io/Superhack2023/obs?streamerAddress=${walletAddressInput.value}`;
         openPopup(obsUrl);
     });
 
@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", function() {
             coinError.classList.add("hidden");
         }
         
-        const donationUrl = `/donorPage?wallet=${walletAddressInput.value}&networks=${selectedNetworks.join(',')}&coins=${selectedCoins.join(',')}`;
+        const donationUrl = `https://lennardevertz.github.io/Superhack2023/donorPage?wallet=${walletAddressInput.value}&networks=${selectedNetworks.join(',')}&coins=${selectedCoins.join(',')}`;
         openPopup(donationUrl);
     });
 
