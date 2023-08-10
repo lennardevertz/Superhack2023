@@ -19,7 +19,7 @@ Elevate your streamer adventure with PlayPal: your partner for earning crypto re
 
 | Network   |      Contract      |       Address |
 |----------|:-------------:|:------:|
-| Base | | |
+| Base | https://goerli.basescan.org/address/0x1f4e13ca70426a5423b77d8c8cd79e767c182a19 | 0x1f4e13ca70426a5423b77d8c8cd79e767c182a19 |
 | Optimism | | |
 | Zora | | |
 - Hardhat
