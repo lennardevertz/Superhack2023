@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", function() {
             coinError.classList.add("hidden");
         }
         
-        const donationUrl = `https://lennardevertz.github.io/Superhack2023/donorPage?wallet=${walletAddressInput.value}&network=${selectedNetworks.join(',')}&token=${selectedCoins.join(',')}`;
+        const donationUrl = `https://lennardevertz.github.io/Superhack2023/donorPage?streamerAddress=${walletAddressInput.value}&network=${selectedNetworks.join(',')}&token=${selectedCoins.join(',')}`;
         openPopup(donationUrl);
     });
 
