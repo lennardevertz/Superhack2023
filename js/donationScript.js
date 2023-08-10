@@ -34,20 +34,20 @@ document.addEventListener("DOMContentLoaded", function() {
 
     if (networkParams.length > 0) {
         networkSelect.innerHTML = '';
-        networkParamsArray.forEach(network => {
+        networkParamsArray.forEach(network_ => {
             const option = document.createElement("option");
-            option.value = network;
-            option.text = network;
+            option.value = network_;
+            option.text = network_;
             networkSelect.appendChild(option);
         });
     }
 
     if (tokenParams.length > 0) {
         tokenSelect.innerHTML = '';
-        tokenParamsArray.forEach(token => {
+        tokenParamsArray.forEach(token_ => {
             const option = document.createElement("option");
-            option.value = token;
-            option.text = token;
+            option.value = token_;
+            option.text = token_;
             tokenSelect.appendChild(option);
         });
     }
@@ -137,10 +137,11 @@ document.addEventListener("DOMContentLoaded", function() {
     async function sendDonation() {
         let message = document.getElementById("message").value;
         let amount = document.getElementById('amount').value == '' ? '1': document.getElementById("amount").value;
-        let tokenAddress = tokenAddresses[token];
+        let tokenAddress = tokenAddresses[selectedToken];
         // use for future nft implementation
         // let assetId = document.getElementById('assetId').value;
         let assetId;
+        console.log(message, amount, tokenAddress)
 
         let {
             integer: amountInteger,
@@ -212,9 +213,10 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     async function callDonationFunction(amount, message, assetAddr, assetId=0) {
+        console.log(amount, message, assetAddr, assetId=0)
 
         // Switch wallet to desired network
-        await switchNetwork(web3, network, provider);
+        await switchNetwork(web3, selectedNetwork, provider);
     
         // Get contract instance
         const contractInstance = await new web3.eth.Contract(abiPlayPal, playPalAddressBase);
