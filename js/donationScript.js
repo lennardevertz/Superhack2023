@@ -30,6 +30,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const networkSelect = document.getElementById("network");
     const tokenSelect = document.getElementById("token");
     const connectWalletButton = document.getElementById("connectWalletButton");
+    const sendButton = document.getElementById("sendButton");
 
     if (networkParams.length > 0) {
         networkSelect.innerHTML = '';
@@ -74,6 +75,11 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
+    sendButton.addEventListener("click", async function(event){
+        if (!walletConnected) await connectWallet();
+        sendDonation();
+    })
+
     let abiPlayPal = [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"recipientAddress","type":"address"},{"indexed":false,"internalType":"string","name":"message","type":"string"},{"indexed":true,"internalType":"address","name":"sender","type":"address"},{"indexed":true,"internalType":"address","name":"tokenAddress","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"DonationSent","type":"event"},{"inputs":[{"internalType":"address","name":"_streamer","type":"address"},{"internalType":"string","name":"_message","type":"string"}],"name":"donate","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"address","name":"_streamer","type":"address"},{"internalType":"uint256","name":"_assetId","type":"uint256"},{"internalType":"uint256","name":"_amount","type":"uint256"},{"internalType":"address","name":"_nftAddress","type":"address"},{"internalType":"string","name":"_message","type":"string"}],"name":"donateERC1155","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"address","name":"_streamer","type":"address"},{"internalType":"uint256","name":"_assetId","type":"uint256"},{"internalType":"address","name":"_nftAddress","type":"address"},{"internalType":"string","name":"_message","type":"string"}],"name":"donateERC721","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"address","name":"_streamer","type":"address"},{"internalType":"uint256","name":"_amount","type":"uint256"},{"internalType":"address","name":"_tokenAddr","type":"address"},{"internalType":"string","name":"_message","type":"string"}],"name":"donateToken","outputs":[],"stateMutability":"payable","type":"function"}];
     let playPalAddressBase = "0x5424cc1599d25fFD314c54DD59A65Cd6d4ac1d2C";
 
@@ -117,7 +123,7 @@ document.addEventListener("DOMContentLoaded", function() {
         connectedAccount = accounts[0]
         console.log(connectedAccount)
         connectWalletButton.textContent = "Disconnect " + connectedAccount.substring(0, 6).concat("...").concat(connectedAccount.substr(-4));
-
+        return
     }
 
     async function disconnectWallet() {
@@ -130,7 +136,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     async function sendDonation() {
         let message = document.getElementById("message").value;
-        let amount = document.getElementById('amount').value;
+        let amount = document.getElementById('amount').value == '' ? '1': document.getElementById("amount").value;
         let tokenAddress = tokenAddresses[token];
         // use for future nft implementation
         // let assetId = document.getElementById('assetId').value;
@@ -139,11 +145,11 @@ document.addEventListener("DOMContentLoaded", function() {
         let {
             integer: amountInteger,
             normal: amountNormal
-        } = await calculateAmount(token, amount)
+        } = await calculateAmount(tokenAddress, amount)
 
         console.log("Calculate amount result")
         console.log(amountInteger.toString(), amountNormal.toString())
-        await callContractFunction(web3, network, amountInteger, message, provider, token, assetId);
+        await callDonationFunction(amountInteger, message, tokenAddress);
     }
 
     async function calculateAmount(_assetAddr, _amount) {
@@ -205,7 +211,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
-    async function callContractFunction(web3, network, amount, message, provider, assetAddr, assetId=0) {
+    async function callDonationFunction(amount, message, assetAddr, assetId=0) {
 
         // Switch wallet to desired network
         await switchNetwork(web3, network, provider);
@@ -219,7 +225,7 @@ document.addEventListener("DOMContentLoaded", function() {
         try {
             gasPrice = await web3.eth.getGasPrice();
         } catch (e) {
-        console.log("Could not estimate gas price: ", e)
+            console.log("Could not estimate gas price: ", e)
         }
     
         switch (assetAddr.toLowerCase()) {
