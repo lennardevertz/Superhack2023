@@ -167,7 +167,7 @@ interval = setInterval(async function () {
         fromAccount = ret[i].fromAddress;
          //add some prettify for addr
         if (typeof(ret[i].tokenId) == "undefined") {
-            basicInfo = fromAccount + " tipped you " + "$" + (await calculateDollar(ret[i].tokenAddress, ret[i].amount));
+            basicInfo = fromAccount.substring(0, 6).concat("...").concat(fromAccount.substr(-4)) + " tipped you " + "$" + (await calculateDollar(ret[i].tokenAddress, ret[i].amount));
         }
         
         message = ret[i].message;
