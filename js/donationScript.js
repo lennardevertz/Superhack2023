@@ -5,13 +5,26 @@ let connectedAccount;
 let web3;
 let selectedNetwork;
 let selectedToken;
+let networkParams;
+let tokenParams;
+let networkParamsArray;
+let tokenParamsArray;
+
 document.addEventListener("DOMContentLoaded", function() {
 
     const urlParams = new URLSearchParams(window.location.search);
-    const networkParams = urlParams.get('network');
-    const tokenParams = urlParams.get('token');
-    let networkParamsArray = networkParams.split(",")
-    let tokenParamsArray = tokenParams.split(",")
+    networkParams = urlParams.get('network');
+    tokenParams = urlParams.get('token');
+    if (networkParams && networkParams.length > 0) {
+        networkParamsArray = networkParams.split(",")
+    } else {
+        networkParams = "";
+    }
+    if (tokenParams && tokenParams.length > 0) {
+        tokenParamsArray = tokenParams.split(",")
+    } else {
+        tokenParams = "";
+    }
 
 
     const networkSelect = document.getElementById("network");
@@ -52,6 +65,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     connectWalletButton.addEventListener("click", function(event) {
+        console.log("Connecting wallet")
         connectWallet();
     });
 
@@ -86,6 +100,7 @@ document.addEventListener("DOMContentLoaded", function() {
     async function connectWallet() {
 
         provider = window.ethereum
+        console.log(provider)
         await provider.enable()
         web3 = await new Web3(provider);
         let accounts = await web3.eth.getAccounts();
