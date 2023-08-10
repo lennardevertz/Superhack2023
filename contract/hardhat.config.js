@@ -8,5 +8,32 @@ module.exports = {
     truffledashboard: {
       url: "http://localhost:24012/rpc"
     },
+    // for mainnet
+    'base-mainnet': {
+      url: 'https://mainnet.base.org',
+      accounts: [""],
+      gasPrice: 1000000000,
+    },
+    // for testnet
+    'base-goerli': {
+      url: 'https://goerli.base.org',
+      accounts: [""],
+      gasPrice: 1000000000,
+    },
+  },
+  etherscan: {
+    apiKey: {
+     "base-goerli": "PLACEHOLDER_STRING"
+    },
+    customChains: [
+      {
+        network: "base-goerli",
+        chainId: 84531,
+        urls: {
+         apiURL: "https://api-goerli.basescan.org/api",
+         browserURL: "https://goerli.basescan.org"
+        }
+      }
+    ]
   },
 };
