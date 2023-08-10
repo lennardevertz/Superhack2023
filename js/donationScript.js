@@ -15,13 +15,16 @@ document.addEventListener("DOMContentLoaded", function() {
     const urlParams = new URLSearchParams(window.location.search);
     networkParams = urlParams.get('network');
     tokenParams = urlParams.get('token');
+    streamerAddress = urlParams.get('streamerAddress');
     if (networkParams && networkParams.length > 0) {
         networkParamsArray = networkParams.split(",")
+        selectedNetwork = networkParamsArray[0];
     } else {
         networkParams = "";
     }
     if (tokenParams && tokenParams.length > 0) {
         tokenParamsArray = tokenParams.split(",")
+        selectedToken = tokenParamsArray[0];
     } else {
         tokenParams = "";
     }
