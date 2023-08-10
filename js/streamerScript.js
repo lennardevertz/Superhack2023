@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", function() {
             coinError.classList.add("hidden");
         }
         
-        const obsUrl = `/obs/?wallet=${walletAddressInput.value}&networks=${selectedNetworks.join(',')}&coins=${selectedCoins.join(',')}`;
+        const obsUrl = `/obs.html?streamerAddress=${walletAddressInput.value}`;
         openPopup(obsUrl);
     });
 
@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", function() {
             coinError.classList.add("hidden");
         }
         
-        const donationUrl = `/donation/?wallet=${walletAddressInput.value}&networks=${selectedNetworks.join(',')}&coins=${selectedCoins.join(',')}`;
+        const donationUrl = `/donorPage.html?wallet=${walletAddressInput.value}&networks=${selectedNetworks.join(',')}&coins=${selectedCoins.join(',')}`;
         openPopup(donationUrl);
     });
 
