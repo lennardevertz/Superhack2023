@@ -235,18 +235,18 @@ document.addEventListener("DOMContentLoaded", function() {
     
         switch (assetAddr.toLowerCase()) {
             case "0x0000000000000000000000000000000000000000":
-                gas = await contractInstance.methods.donate(streamer, message).estimateGas({from: connectedAccount, value: amount.toString()});
-                result = await contractInstance.methods.donate(streamer, message).send({ from: connectedAccount, value: amount.toString(), gas: gas, gasPrice: gasPrice });
+                gas = await contractInstance.methods.donate(streamerAddress, message).estimateGas({from: connectedAccount, value: amount.toString()});
+                result = await contractInstance.methods.donate(streamerAddress, message).send({ from: connectedAccount, value: amount.toString(), gas: gas, gasPrice: gasPrice });
             break;
             default:
                 if (assetId==0){
                     // add token approval
-                    gas = await contractInstance.methods.donateToken(streamer, amount.toString(), assetAddr, message).estimateGas({from: connectedAccount, value: 0});
-                    result = await contractInstance.methods.donateToken(streamer, amount.toString(), assetAddr, message).send({ from: connectedAccount, value: 0, gas: gas, gasPrice: gasPrice });
+                    gas = await contractInstance.methods.donateToken(streamerAddress, amount.toString(), assetAddr, message).estimateGas({from: connectedAccount, value: 0});
+                    result = await contractInstance.methods.donateToken(streamerAddress, amount.toString(), assetAddr, message).send({ from: connectedAccount, value: 0, gas: gas, gasPrice: gasPrice });
                 } else {
                     // add token approval
-                    gas = await contractInstance.methods.donateERC1155(streamer, assetId, amount.toString(), assetAddr, message).estimateGas({from: connectedAccount, value: 0});
-                    result = await contractInstance.methods.donateERC1155(streamer, assetId, amount.toString(), assetAddr, message).send({ from: connectedAccount, value: 0, gas: gas, gasPrice: gasPrice });
+                    gas = await contractInstance.methods.donateERC1155(streamerAddress, assetId, amount.toString(), assetAddr, message).estimateGas({from: connectedAccount, value: 0});
+                    result = await contractInstance.methods.donateERC1155(streamerAddress, assetId, amount.toString(), assetAddr, message).send({ from: connectedAccount, value: 0, gas: gas, gasPrice: gasPrice });
                 }
             throw new Error("Invalid network name");
         }
