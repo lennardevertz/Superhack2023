@@ -187,10 +187,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     let tokenAddresses = {
         ETH: "0x0000000000000000000000000000000000000000",
-        PRIME: "0xb23d80f5fefcddaa212212f028021b41ded428cf",
-        get NFT() {
-            return assetAddress;
-        }
+        PRIME: "0xb23d80f5fefcddaa212212f028021b41ded428cf"
     }
 
     async function loadPlayPal(web3, contractAddr) {
@@ -233,7 +230,7 @@ document.addEventListener("DOMContentLoaded", function() {
     async function sendDonation() {
         let message = document.getElementById("message").value;
         let amount = document.getElementById('amount').value == '' ? '1': document.getElementById("amount").value;
-        let tokenAddress = tokenAddresses[selectedToken];
+        let tokenAddress = selectedToken.toLowerCase() == "nft" ? assetAddress : tokenAddresses[selectedToken];
         console.log(message, amount, tokenAddress, assetId)
         let amountInteger;
         let amountNormal;
