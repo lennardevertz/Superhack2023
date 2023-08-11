@@ -28,6 +28,16 @@
                     <option value="token2">PRIME</option>
                 </select>
             </div>
+
+            <div id="nftDropdownContainer" style="display: none" class="mb-4 relative">
+                <label for="nftDropdown" class="block font-bold mb-2">Choose NFT:</label>
+                <div class="relative bg-white border rounded focus-within:border-blue-500">
+                    <button id="nftDropdownToggle" class="w-full py-2 px-4 text-left focus:outline-none hidden">Select NFT</button>
+                    <div id="customNftDropdown" class="absolute hidden mt-2 w-full border rounded focus:outline-none focus:border-blue-500 bg-white">
+                    </div>
+                </div>
+            </div>          
+            
             
             <div class="mb-4">
                 <label for="amount" class="block font-bold mb-2">Choose Token Amount:</label>

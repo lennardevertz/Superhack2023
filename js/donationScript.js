@@ -9,6 +9,9 @@ let networkParams;
 let tokenParams;
 let networkParamsArray;
 let tokenParamsArray;
+let assetId;
+let selctedNFT;
+let assetAddress;
 
 document.addEventListener("DOMContentLoaded", function() {
 
@@ -32,6 +35,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const networkSelect = document.getElementById("network");
     const tokenSelect = document.getElementById("token");
+    const nftSelect = document.getElementById("nftDropdown");
+    const nftDropdownContainer = document.getElementById("nftDropdownContainer");
     const connectWalletButton = document.getElementById("connectWalletButton");
     const sendButton = document.getElementById("sendButton");
 
@@ -61,10 +66,96 @@ document.addEventListener("DOMContentLoaded", function() {
         console.log("Selected network:", selectedNetwork);
     });
 
-    tokenSelect.addEventListener("change", function(event) {
+    tokenSelect.addEventListener("change", async function(event) {
         selectedToken = event.target.value;
         console.log("Selected token:", selectedToken);
+
+        if (selectedToken.toLowerCase() === "nft") {
+            // await connectWallet();
+            connectedAccount ="0x"
+            try {
+                const nftData = await fetchNFTsForAddress(connectedAccount);
+                populateNFTDropdown(nftData);
+    
+                nftDropdownContainer.style.display = "block";
+            } catch (error) {
+                console.error("Error fetching NFTs:", error);
+            }
+        } else {
+            nftDropdownContainer.style.display = "none";
+        }
+
     });
+
+    const nftDropdownToggle = document.getElementById("nftDropdownToggle");
+    const customNftDropdown = document.getElementById("customNftDropdown");
+
+    // Event listener for the dropdown toggle button
+    nftDropdownToggle.addEventListener("click", function() {
+        customNftDropdown.classList.toggle("hidden");
+    });
+
+    // Function to show the custom dropdown
+    function showCustomDropdown() {
+        // customNftDropdown.classList.remove("hidden");
+        nftDropdownToggle.classList.remove("hidden");
+    }
+
+    // Function to hide the custom dropdown
+    function hideCustomDropdown() {
+        customNftDropdown.classList.add("hidden");
+        nftDropdownToggle.classList.add("hidden");
+    }
+
+
+    async function fetchNFTsForAddress(address) {
+        // const response = await fetch(`YOUR_NFT_API_ENDPOINT/${address}`);
+        const response = [{assetAddress: "0xnftaddress", id: 1, name: "Test NFT Name", imageUrl: "https://lh3.googleusercontent.com/RRappOVtmotZGADmfAUgPaD4_Qlg5yboAffg1dg_BfherhsudhOQouR4cbtXk4muWK4ymLvEfOXYvVxds9nR7DaWjs_2pYOupSiM=w600"}, {assetAddress: "0xnftaddress", id: 1, name: "Test NFT Name", imageUrl: "https://lh3.googleusercontent.com/RRappOVtmotZGADmfAUgPaD4_Qlg5yboAffg1dg_BfherhsudhOQouR4cbtXk4muWK4ymLvEfOXYvVxds9nR7DaWjs_2pYOupSiM=w600"}];
+        // const data = await response.json();
+        return response;
+    }    
+
+    function populateNFTDropdown(nftData) {
+        const customNftDropdown = document.getElementById("customNftDropdown");
+        customNftDropdown.innerHTML = ""; // Clear existing options
+    
+        nftData.forEach(nft => {
+            const optionDiv = document.createElement("div");
+            optionDiv.classList.add(
+                "flex", "items-center", "py-2", "px-4", "cursor-pointer", "hover:bg-gray-100"
+            );
+    
+            optionDiv.setAttribute("data-address", nft.assetAddress);
+    
+            const img = document.createElement("img");
+            img.src = nft.imageUrl;
+            img.alt = nft.name;
+            img.classList.add("w-6", "h-6", "mr-2");
+    
+            const textDiv = document.createElement("div");
+            textDiv.textContent = nft.name;
+            textDiv.classList.add("ml-2");
+    
+            optionDiv.appendChild(img);
+            optionDiv.appendChild(textDiv);
+    
+            customNftDropdown.appendChild(optionDiv);
+    
+            optionDiv.addEventListener("click", function() {
+                selectedToken = "nft";
+                assetAddress = optionDiv.getAttribute("data-address");
+                assetId = nft.id;
+                console.log(assetId, assetAddress)
+                customNftDropdown.classList.add("hidden");
+                nftDropdownToggle.innerHTML = nft.name;
+            });
+        });
+        if (nftData.length > 0) {
+            showCustomDropdown();
+        } else {
+            hideCustomDropdown();
+        }
+    }
 
     let walletConnected = false;
 
@@ -79,7 +170,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     sendButton.addEventListener("click", async function(event){
-        if (!walletConnected) await connectWallet();
+        // if (!walletConnected) await connectWallet();
         sendDonation();
     })
 
@@ -96,9 +187,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
     let tokenAddresses = {
         ETH: "0x0000000000000000000000000000000000000000",
-        PRIME: "0xb23d80f5fefcddaa212212f028021b41ded428cf"
+        PRIME: "0xb23d80f5fefcddaa212212f028021b41ded428cf",
+        get NFT() {
+            return assetAddress;
+        }
     }
-
 
     async function loadPlayPal(web3, contractAddr) {
         return await new web3.eth.Contract(abiPlayPal, contractAddr);
@@ -141,22 +234,27 @@ document.addEventListener("DOMContentLoaded", function() {
         let message = document.getElementById("message").value;
         let amount = document.getElementById('amount').value == '' ? '1': document.getElementById("amount").value;
         let tokenAddress = tokenAddresses[selectedToken];
-        // use for future nft implementation
-        // let assetId = document.getElementById('assetId').value;
-        let assetId;
-        console.log(message, amount, tokenAddress)
+        console.log(message, amount, tokenAddress, assetId)
+        let amountInteger;
+        let amountNormal;
 
-        let {
-            integer: amountInteger,
-            normal: amountNormal
-        } = await calculateAmount(tokenAddress, amount)
+        if (typeof(assetId) !== 'undefined') {
+            amountInteger = '1'
+            amountNormal = '1'
+        } else {
+            let calculated = await calculateAmount(tokenAddress, amount);
+            amountInteger = calculated.integer;
+            amountNormal = calculated.normal
+        }
+        
 
         console.log("Calculate amount result")
         console.log(amountInteger.toString(), amountNormal.toString())
-        await callDonationFunction(amountInteger, message, tokenAddress);
+        await callDonationFunction(amountInteger, message, tokenAddress, assetId);
     }
 
     async function calculateAmount(_assetAddr, _amount) {
+        let BN = web3Base.utils.BN;
         let priceSt;
 
         let decimals = coingeckoId[_assetAddr][1];
@@ -164,7 +262,6 @@ document.addEventListener("DOMContentLoaded", function() {
         priceSt = Object.values(Object.values(response)[0])[0].toString();
         console.log(priceSt, decimals)
 
-        let BN = web3Base.utils.BN;
         let ten = new BN(10);
         let base = ten.pow(new BN(decimals));
         let integer = await getAmount(_amount.toString(), priceSt, decimals);
