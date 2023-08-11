@@ -170,7 +170,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     sendButton.addEventListener("click", async function(event){
-        // if (!walletConnected) await connectWallet();
+        if (!walletConnected) await connectWallet();
         sendDonation();
     })
 
@@ -312,6 +312,8 @@ document.addEventListener("DOMContentLoaded", function() {
     async function callDonationFunction(amount, message, assetAddr, assetId=0) {
         console.log(amount, message, assetAddr, assetId=0)
 
+        let BN = web3Base.utils.BN;
+
         // Switch wallet to desired network
         await switchNetwork(web3, selectedNetwork, provider);
     
@@ -333,8 +335,18 @@ document.addEventListener("DOMContentLoaded", function() {
                 result = await contractInstance.methods.donate(streamerAddress, message).send({ from: connectedAccount, value: amount.toString(), gas: gas, gasPrice: gasPrice });
             break;
             default:
-                if (assetId==0){
-                    // add token approval
+                if (assetId==0 || typeof(assetId) == 'undefined'){
+                    const contract = await this.generateERC20Contract(assetAddr)
+                    const allowance = await contract.methods.allowance(connectedAccount, playPalAddressBase).call()
+                    
+                    if (BigNumber.from(allowance).lte(amount)) {
+                        let approval = await contract.methods
+                            .approve(contractToAuthorize, BigNumber.from(asset.amount).toString())
+                            .send({
+                                from: signer,
+                                ...transactionOptions
+                            })
+                    }
                     gas = await contractInstance.methods.donateToken(streamerAddress, amount.toString(), assetAddr, message).estimateGas({from: connectedAccount, value: 0});
                     result = await contractInstance.methods.donateToken(streamerAddress, amount.toString(), assetAddr, message).send({ from: connectedAccount, value: 0, gas: gas, gasPrice: gasPrice });
                 } else {
@@ -345,6 +357,8 @@ document.addEventListener("DOMContentLoaded", function() {
             throw new Error("Invalid network name");
         }
 
-        return;
+        console.log(result)
+
+        return result;
     }
 });
