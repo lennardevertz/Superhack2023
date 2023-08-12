@@ -109,16 +109,19 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
 
-    async function fetchNFTsForAddress(address) {
-        // const response = await fetch(`YOUR_NFT_API_ENDPOINT/${address}`);
+    async function fetchNFTsForAddress(address, network="base") {
+        // fetch nfts here, depending on network?
+        // const response = await fetch(``);
         const response = [{assetAddress: "0x76be3b62873462d2142405439777e971754e8e77", id: 10519, name: "Erasure", imageUrl: "https://i.seadn.io/gcs/files/b1491c1ba6e90f36c4029c59e00a4f97.png?auto=format&dpr=1&w=1000"}, {assetAddress: "0xnftaddress", id: 1, name: "Test NFT Name", imageUrl: "https://lh3.googleusercontent.com/RRappOVtmotZGADmfAUgPaD4_Qlg5yboAffg1dg_BfherhsudhOQouR4cbtXk4muWK4ymLvEfOXYvVxds9nR7DaWjs_2pYOupSiM=w600"}];
         // const data = await response.json();
         return response;
     }    
 
     function populateNFTDropdown(nftData) {
+
+        // populate for a given network only?
         const customNftDropdown = document.getElementById("customNftDropdown");
-        customNftDropdown.innerHTML = ""; // Clear existing options
+        customNftDropdown.innerHTML = "";
     
         nftData.forEach(nft => {
             const optionDiv = document.createElement("div");
@@ -177,17 +180,29 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const abiPlayPal = [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"recipientAddress","type":"address"},{"indexed":false,"internalType":"string","name":"message","type":"string"},{"indexed":true,"internalType":"address","name":"sender","type":"address"},{"indexed":true,"internalType":"address","name":"tokenAddress","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"DonationSent","type":"event"},{"inputs":[{"internalType":"address","name":"_streamer","type":"address"},{"internalType":"string","name":"_message","type":"string"}],"name":"donate","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"address","name":"_streamer","type":"address"},{"internalType":"uint256","name":"_assetId","type":"uint256"},{"internalType":"uint256","name":"_amount","type":"uint256"},{"internalType":"address","name":"_nftAddress","type":"address"},{"internalType":"string","name":"_message","type":"string"}],"name":"donateERC1155","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"address","name":"_streamer","type":"address"},{"internalType":"uint256","name":"_assetId","type":"uint256"},{"internalType":"address","name":"_nftAddress","type":"address"},{"internalType":"string","name":"_message","type":"string"}],"name":"donateERC721","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"address","name":"_streamer","type":"address"},{"internalType":"uint256","name":"_amount","type":"uint256"},{"internalType":"address","name":"_tokenAddr","type":"address"},{"internalType":"string","name":"_message","type":"string"}],"name":"donateToken","outputs":[],"stateMutability":"payable","type":"function"}];
     const playPalAddressBase = "0x5424cc1599d25fFD314c54DD59A65Cd6d4ac1d2C";
+    let playPalAddressOP = "0x0Ad5258c3b7049E76DBCf41Ed62a62fF80564f30";
+    let playPalAddressZora = "0x64c47b7920B107027DedB53e3c5b070cDD14eE4D";
 
     const ERC20Abi = [{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"spender","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"spender","type":"address"}],"name":"allowance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"approve","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transfer","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transferFrom","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"}];
     const ERC1155Abi = [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"account","type":"address"},{"indexed":true,"internalType":"address","name":"operator","type":"address"},{"indexed":false,"internalType":"bool","name":"approved","type":"bool"}],"name":"ApprovalForAll","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"operator","type":"address"},{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256[]","name":"ids","type":"uint256[]"},{"indexed":false,"internalType":"uint256[]","name":"values","type":"uint256[]"}],"name":"TransferBatch","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"operator","type":"address"},{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"id","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"TransferSingle","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"string","name":"value","type":"string"},{"indexed":true,"internalType":"uint256","name":"id","type":"uint256"}],"name":"URI","type":"event"},{"inputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"uint256","name":"id","type":"uint256"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address[]","name":"accounts","type":"address[]"},{"internalType":"uint256[]","name":"ids","type":"uint256[]"}],"name":"balanceOfBatch","outputs":[{"internalType":"uint256[]","name":"","type":"uint256[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"address","name":"operator","type":"address"}],"name":"isApprovedForAll","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"mint","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"renounceOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256[]","name":"ids","type":"uint256[]"},{"internalType":"uint256[]","name":"amounts","type":"uint256[]"},{"internalType":"bytes","name":"data","type":"bytes"}],"name":"safeBatchTransferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"id","type":"uint256"},{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"bytes","name":"data","type":"bytes"}],"name":"safeTransferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"operator","type":"address"},{"internalType":"bool","name":"approved","type":"bool"}],"name":"setApprovalForAll","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bytes4","name":"interfaceId","type":"bytes4"}],"name":"supportsInterface","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"uri","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"}];
 
-    const web3Base = new Web3(new Web3.providers.HttpProvider("https://goerli.base.org"));
+    const web3Base = new Web3(new Web3.providers.HttpProvider("https://goerli.base.org")); // Mainnet https://mainnet.base.org	
 
+    // ToDo: change PRIME address
     let coingeckoId = {
-        "0x0000000000000000000000000000000000000000": ["ethereum", 18],
-        "0xb23d80f5fefcddaa212212f028021b41ded428cf": ["echelon-prime", 18],
+        "base": {
+            "0x0000000000000000000000000000000000000000": ["ethereum", 18],
+            "0xb23d80f5fefcddaa212212f028021b41ded428cf": ["echelon-prime", 18]
+        },
+        "optimism": {
+            "0x0000000000000000000000000000000000000000": ["ethereum", 18]
+        },
+        "zora": {
+            "0x0000000000000000000000000000000000000000": ["ethereum", 18]
+        }
     };
 
+    // ToDo: change PRIME address
     let tokenAddresses = {
         ETH: "0x0000000000000000000000000000000000000000",
         PRIME: "0xb23d80f5fefcddaa212212f028021b41ded428cf"
@@ -198,6 +213,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
 
+    // can delete?
     async function loadPlayPalContracts() {
         playPalBase = await loadPlayPal(web3Base, playPalAddressBase);
     }
@@ -235,6 +251,7 @@ document.addEventListener("DOMContentLoaded", function() {
         let amount = document.getElementById('amount').value == '' ? '1': document.getElementById("amount").value;
         let tokenAddress = selectedToken.toLowerCase() == "nft" ? assetAddress : tokenAddresses[selectedToken];
         console.log(message, amount, tokenAddress, assetId)
+
         let amountInteger;
         let amountNormal;
 
@@ -242,7 +259,7 @@ document.addEventListener("DOMContentLoaded", function() {
             amountInteger = '1'
             amountNormal = '1'
         } else {
-            let calculated = await calculateAmount(tokenAddress, amount);
+            let calculated = await calculateAmount(tokenAddress, amount, selectedNetwork);
             amountInteger = calculated.integer;
             amountNormal = calculated.normal
         }
@@ -253,12 +270,12 @@ document.addEventListener("DOMContentLoaded", function() {
         await callDonationFunction(amountInteger.toString(), message, tokenAddress, assetId);
     }
 
-    async function calculateAmount(_assetAddr, _amount) {
+    async function calculateAmount(_assetAddr, _amount, _network) {
         let BN = web3Base.utils.BN;
         let priceSt;
 
-        let decimals = coingeckoId[_assetAddr][1];
-        let response = await (await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${coingeckoId[_assetAddr][0]}&vs_currencies=USD`)).json();
+        let decimals = coingeckoId[_network][_assetAddr][1];
+        let response = await (await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${coingeckoId[_network][_assetAddr][0]}&vs_currencies=USD`)).json();
         priceSt = Object.values(Object.values(response)[0])[0].toString();
         console.log(priceSt, decimals)
 
@@ -299,7 +316,14 @@ document.addEventListener("DOMContentLoaded", function() {
         let desiredNetworkId;
         switch (networkName.toLowerCase()) {
         case "base":
+            // Mainnet: 8453
             desiredNetworkId = 84531;
+            break;
+        case "optimism":
+            desiredNetworkId = 420;
+            break;
+        case "zora":
+            desiredNetworkId = 999;
             break;
         default:
             throw new Error("Invalid network name");
