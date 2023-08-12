@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", function() {
     if (networkParamsArray.length > 0 && tokenParamsArray.length > 0) {
         networkParamsArray.forEach(network_ => {
             if (network_.toLowerCase()==="base") availableTokens[network_.toLowerCase()] = tokenParamsArray;
-            else availableTokens[network_] = [tokenParamsArray[0]];
+            else availableTokens[network_.toLowerCase()] = [tokenParamsArray[0]];
         });
     }
     console.log(availableTokens)
