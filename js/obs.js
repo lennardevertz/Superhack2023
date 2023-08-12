@@ -234,7 +234,7 @@ async function getVal(tippingAmount, tokenPrice, decimals) {
 
 async function calculateDollar(_assetAddr, _amount, _network) {
     let priceSt;
-    let response = await (await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${coingeckoId[_network][_assetAddr][0]}&vs_currencies=USD`)).json();
+    let response = await (await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${coingeckoId[_network.toLowerCase()][_assetAddr][0]}&vs_currencies=USD`)).json();
     priceSt = Object.values(Object.values(response)[0])[0];
 
     let decimals = coingeckoId[_network][_assetAddr][1];
@@ -274,7 +274,7 @@ interval = setInterval(async function () {
         fromAccount = ret[i].fromAddress;
          //add some prettify for addr
         if (typeof(ret[i].tokenId) == "undefined") {
-            basicInfo = fromAccount.substring(0, 6).concat("...").concat(fromAccount.substr(-4)) + " tipped you " + "$" + (await calculateDollar(ret[i].tokenAddress, ret[i].amount, ret[i].network));
+            basicInfo = fromAccount.substring(0, 6).concat("...").concat(fromAccount.substr(-4)) + " tipped you " + "$" + (await calculateDollar(ret[i].tokenAddress, ret[i].amount, ret[i].network.toLowerCase()));
         } else {
             const metadataURI = await getMetadataURI(ret[i].tokenAddress, ret[i].tokenId, web3Base);
             let nftName;

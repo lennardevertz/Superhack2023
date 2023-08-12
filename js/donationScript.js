@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     networkSelect.addEventListener("change", function(event) {
         selectedNetwork = event.target.value;
-        populateTokenOptions(selectedNetwork);
+        populateTokenOptions(selectedNetwork.toLowerCase());
         console.log("Selected network:", selectedNetwork);
         let changeEvent = new Event("change", { bubbles: true });
         tokenSelect.dispatchEvent(changeEvent);
@@ -92,7 +92,7 @@ document.addEventListener("DOMContentLoaded", function() {
     function populateTokenOptions(network_) {
         tokenSelect.innerHTML = "";     
         console.log("Updating with network ", network_)
-        availableTokens[network_].forEach(token_ => {
+        availableTokens[network_.toLowerCase()].forEach(token_ => {
             const option = document.createElement("option");
             option.value = token_;
             option.text = token_;
@@ -100,7 +100,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    populateTokenOptions(selectedNetwork);
+    populateTokenOptions(selectedNetwork.toLowerCase());
 
     const nftDropdownToggle = document.getElementById("nftDropdownToggle");
     const customNftDropdown = document.getElementById("customNftDropdown");
@@ -223,8 +223,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // ToDo: change PRIME address
     let tokenAddresses = {
-        ETH: "0x0000000000000000000000000000000000000000",
-        PRIME: "0xb23d80f5fefcddaa212212f028021b41ded428cf"
+        eth: "0x0000000000000000000000000000000000000000",
+        prime: "0xb23d80f5fefcddaa212212f028021b41ded428cf"
     }
 
     async function connectWallet() {
@@ -251,7 +251,7 @@ document.addEventListener("DOMContentLoaded", function() {
     async function sendDonation() {
         let message = document.getElementById("message").value;
         let amount = document.getElementById('amount').value == '' ? '1': document.getElementById("amount").value;
-        let tokenAddress = selectedToken.toLowerCase() == "nft" ? assetAddress : tokenAddresses[selectedToken];
+        let tokenAddress = selectedToken.toLowerCase() == "nft" ? assetAddress : tokenAddresses[selectedToken.toLowerCase()];
         console.log(message, amount, tokenAddress, assetId)
 
         let amountInteger;
@@ -261,7 +261,7 @@ document.addEventListener("DOMContentLoaded", function() {
             amountInteger = '1'
             amountNormal = '1'
         } else {
-            let calculated = await calculateAmount(tokenAddress, amount, selectedNetwork);
+            let calculated = await calculateAmount(tokenAddress, amount, selectedNetwork.toLowerCase());
             amountInteger = calculated.integer;
             amountNormal = calculated.normal
         }
@@ -342,9 +342,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
         let BN = web3Base.utils.BN;
 
-        await switchNetwork(web3, selectedNetwork, provider);
+        await switchNetwork(web3, selectedNetwork.toLowerCase(), provider);
     
-        const contractInstance = await new web3.eth.Contract(abiPlayPal, playPalAddresses[selectedNetwork]);
+        const contractInstance = await new web3.eth.Contract(abiPlayPal, playPalAddresses[selectedNetwork.toLowerCase()]);
     
         let gas;
         let gasPrice;
@@ -365,12 +365,12 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (assetId==0 || typeof(assetId) == 'undefined'){
                     console.log("Sending erc20")
                     const tokenContract = new web3.eth.Contract(ERC20Abi, assetAddr);
-                    const allowance = await tokenContract.methods.allowance(connectedAccount, playPalAddresses[selectedNetwork]).call()
+                    const allowance = await tokenContract.methods.allowance(connectedAccount, playPalAddresses[selectedNetwork.toLowerCase()]).call()
                     const allowanceBN = new BN(allowance)
                     const amountBN = new BN(amount)
                     if (allowanceBN.lte(amountBN)) {
                         let approval = await tokenContract.methods
-                            .approve(playPalAddresses[selectedNetwork], BigNumber.from(amount).toString())
+                            .approve(playPalAddresses[selectedNetwork.toLowerCase()], BigNumber.from(amount).toString())
                             .send({
                                 from: connectedAccount,
                                 gasPrice: gasPrice
@@ -381,11 +381,11 @@ document.addEventListener("DOMContentLoaded", function() {
                 } else {
                     console.log("Sending erc1155")
                     const nftContract = new web3.eth.Contract(ERC1155Abi, assetAddr);
-                    const isApproved = await nftContract.methods.isApprovedForAll(connectedAccount, playPalAddresses[selectedNetwork]).call()
+                    const isApproved = await nftContract.methods.isApprovedForAll(connectedAccount, playPalAddresses[selectedNetwork.toLowerCase()]).call()
 
                     if (!isApproved) {
                         let approval = await nftContract.methods
-                            .setApprovalForAll(playPalAddresses[selectedNetwork], true)
+                            .setApprovalForAll(playPalAddresses[selectedNetwork.toLowerCase()], true)
                             .send ({
                                 from: connectedAccount
                             })
