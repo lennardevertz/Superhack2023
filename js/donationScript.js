@@ -333,11 +333,13 @@ document.addEventListener("DOMContentLoaded", function() {
     
         switch (assetAddr.toLowerCase()) {
             case "0x0000000000000000000000000000000000000000":
+                console.log("Sending native token")
                 gas = await contractInstance.methods.donate(streamerAddress, message).estimateGas({from: connectedAccount, value: amount.toString()});
                 result = await contractInstance.methods.donate(streamerAddress, message).send({ from: connectedAccount, value: amount.toString(), gas: gas, gasPrice: gasPrice });
             break;
             default:
                 if (assetId==0 || typeof(assetId) == 'undefined'){
+                    console.log("Sending erc20")
                     const tokenContract = new web3.eth.Contract(ERC20Abi, assetAddr);
                     const allowance = await tokenContract.methods.allowance(connectedAccount, playPalAddressBase).call()
                     const allowanceBN = new BN(allowance)
@@ -353,6 +355,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     gas = await contractInstance.methods.donateToken(streamerAddress, amount.toString(), assetAddr, message).estimateGas({from: connectedAccount, value: 0});
                     result = await contractInstance.methods.donateToken(streamerAddress, amount.toString(), assetAddr, message).send({ from: connectedAccount, value: 0, gas: gas, gasPrice: gasPrice });
                 } else {
+                    console.log("Sending erc1155")
                     const nftContract = new web3.eth.Contract(ERC1155Abi, assetAddr);
                     const isApproved = await nftContract.methods.isApprovedForAll(connectedAccount, playPalAddressBase).call()
 
