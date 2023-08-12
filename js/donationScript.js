@@ -25,6 +25,7 @@ document.addEventListener("DOMContentLoaded", function() {
     } else {
         networkParams = "";
     }
+
     if (tokenParams && tokenParams.length > 0) {
         tokenParamsArray = tokenParams.split(",")
         selectedToken = tokenParamsArray[0];
@@ -32,6 +33,15 @@ document.addEventListener("DOMContentLoaded", function() {
         tokenParams = "";
     }
 
+    let availableTokens = {};
+
+    if (networkParamsArray.length > 0 && tokenParamsArray.length > 0) {
+        networkParamsArray.forEach(network_ => {
+            if (network_.toLowerCase()==="base") availableTokens[network_] = tokenParamsArray;
+            else availableTokens[network_] = [tokenParamsArray[0]];
+        });
+    }
+    console.log(availableTokens)
 
     const networkSelect = document.getElementById("network");
     const tokenSelect = document.getElementById("token");
@@ -50,20 +60,12 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    if (tokenParams.length > 0) {
-        tokenSelect.innerHTML = '';
-        tokenParamsArray.forEach(token_ => {
-            const option = document.createElement("option");
-            option.value = token_;
-            option.text = token_;
-            tokenSelect.appendChild(option);
-        });
-    }
-
-
     networkSelect.addEventListener("change", function(event) {
         selectedNetwork = event.target.value;
+        populateTokenOptions(selectedNetwork);
         console.log("Selected network:", selectedNetwork);
+        let changeEvent = new Event("change", { bubbles: true });
+        tokenSelect.dispatchEvent(changeEvent);
     });
 
     tokenSelect.addEventListener("change", async function(event) {
@@ -87,6 +89,19 @@ document.addEventListener("DOMContentLoaded", function() {
         }
 
     });
+
+    function populateTokenOptions(network_) {
+        tokenSelect.innerHTML = "";     
+        console.log("Updating with network ", network_)
+        availableTokens[network_].forEach(token_ => {
+            const option = document.createElement("option");
+            option.value = token_;
+            option.text = token_;
+            tokenSelect.appendChild(option);
+        });
+    }
+
+    populateTokenOptions(selectedNetwork);
 
     const nftDropdownToggle = document.getElementById("nftDropdownToggle");
     const customNftDropdown = document.getElementById("customNftDropdown");
@@ -180,9 +195,14 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const abiPlayPal = [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"recipientAddress","type":"address"},{"indexed":false,"internalType":"string","name":"message","type":"string"},{"indexed":true,"internalType":"address","name":"sender","type":"address"},{"indexed":true,"internalType":"address","name":"tokenAddress","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"DonationSent","type":"event"},{"inputs":[{"internalType":"address","name":"_streamer","type":"address"},{"internalType":"string","name":"_message","type":"string"}],"name":"donate","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"address","name":"_streamer","type":"address"},{"internalType":"uint256","name":"_assetId","type":"uint256"},{"internalType":"uint256","name":"_amount","type":"uint256"},{"internalType":"address","name":"_nftAddress","type":"address"},{"internalType":"string","name":"_message","type":"string"}],"name":"donateERC1155","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"address","name":"_streamer","type":"address"},{"internalType":"uint256","name":"_assetId","type":"uint256"},{"internalType":"address","name":"_nftAddress","type":"address"},{"internalType":"string","name":"_message","type":"string"}],"name":"donateERC721","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"address","name":"_streamer","type":"address"},{"internalType":"uint256","name":"_amount","type":"uint256"},{"internalType":"address","name":"_tokenAddr","type":"address"},{"internalType":"string","name":"_message","type":"string"}],"name":"donateToken","outputs":[],"stateMutability":"payable","type":"function"}];
     const playPalAddressBase = "0x5424cc1599d25fFD314c54DD59A65Cd6d4ac1d2C";
-    let playPalAddressOP = "0x0Ad5258c3b7049E76DBCf41Ed62a62fF80564f30";
-    let playPalAddressZora = "0x64c47b7920B107027DedB53e3c5b070cDD14eE4D";
+    const playPalAddressOP = "0x0Ad5258c3b7049E76DBCf41Ed62a62fF80564f30";
+    const playPalAddressZora = "0x64c47b7920B107027DedB53e3c5b070cDD14eE4D";
 
+    const playPalAddresses = {
+        "base": playPalAddressBase,
+        "optimisim": playPalAddressOP,
+        "zora": playPalAddressZora
+    }
     const ERC20Abi = [{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"spender","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"spender","type":"address"}],"name":"allowance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"approve","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transfer","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transferFrom","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"}];
     const ERC1155Abi = [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"account","type":"address"},{"indexed":true,"internalType":"address","name":"operator","type":"address"},{"indexed":false,"internalType":"bool","name":"approved","type":"bool"}],"name":"ApprovalForAll","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"operator","type":"address"},{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256[]","name":"ids","type":"uint256[]"},{"indexed":false,"internalType":"uint256[]","name":"values","type":"uint256[]"}],"name":"TransferBatch","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"operator","type":"address"},{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"id","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"TransferSingle","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"string","name":"value","type":"string"},{"indexed":true,"internalType":"uint256","name":"id","type":"uint256"}],"name":"URI","type":"event"},{"inputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"uint256","name":"id","type":"uint256"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address[]","name":"accounts","type":"address[]"},{"internalType":"uint256[]","name":"ids","type":"uint256[]"}],"name":"balanceOfBatch","outputs":[{"internalType":"uint256[]","name":"","type":"uint256[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"address","name":"operator","type":"address"}],"name":"isApprovedForAll","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"tokenId","type":"uint256"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"mint","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"renounceOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256[]","name":"ids","type":"uint256[]"},{"internalType":"uint256[]","name":"amounts","type":"uint256[]"},{"internalType":"bytes","name":"data","type":"bytes"}],"name":"safeBatchTransferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"id","type":"uint256"},{"internalType":"uint256","name":"amount","type":"uint256"},{"internalType":"bytes","name":"data","type":"bytes"}],"name":"safeTransferFrom","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"operator","type":"address"},{"internalType":"bool","name":"approved","type":"bool"}],"name":"setApprovalForAll","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bytes4","name":"interfaceId","type":"bytes4"}],"name":"supportsInterface","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"uri","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"}];
 
@@ -207,23 +227,6 @@ document.addEventListener("DOMContentLoaded", function() {
         ETH: "0x0000000000000000000000000000000000000000",
         PRIME: "0xb23d80f5fefcddaa212212f028021b41ded428cf"
     }
-
-    async function loadPlayPal(web3, contractAddr) {
-        return await new web3.eth.Contract(abiPlayPal, contractAddr);
-    }
-
-
-    // can delete?
-    async function loadPlayPalContracts() {
-        playPalBase = await loadPlayPal(web3Base, playPalAddressBase);
-    }
-
-    async function init() {
-        // add param handling here
-        await loadPlayPalContracts();
-    }
-
-    init();
 
     async function connectWallet() {
 
@@ -345,7 +348,7 @@ document.addEventListener("DOMContentLoaded", function() {
         await switchNetwork(web3, selectedNetwork, provider);
     
         // Get contract instance
-        const contractInstance = await new web3.eth.Contract(abiPlayPal, playPalAddressBase);
+        const contractInstance = await new web3.eth.Contract(abiPlayPal, playPalAddresses[selectedNetwork]);
     
         let gas;
         let gasPrice;
@@ -366,12 +369,12 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (assetId==0 || typeof(assetId) == 'undefined'){
                     console.log("Sending erc20")
                     const tokenContract = new web3.eth.Contract(ERC20Abi, assetAddr);
-                    const allowance = await tokenContract.methods.allowance(connectedAccount, playPalAddressBase).call()
+                    const allowance = await tokenContract.methods.allowance(connectedAccount, playPalAddresses[selectedNetwork]).call()
                     const allowanceBN = new BN(allowance)
                     const amountBN = new BN(amount)
                     if (allowanceBN.lte(amountBN)) {
                         let approval = await tokenContract.methods
-                            .approve(playPalAddressBase, BigNumber.from(amount).toString())
+                            .approve(playPalAddresses[selectedNetwork], BigNumber.from(amount).toString())
                             .send({
                                 from: connectedAccount,
                                 gasPrice: gasPrice
@@ -382,11 +385,11 @@ document.addEventListener("DOMContentLoaded", function() {
                 } else {
                     console.log("Sending erc1155")
                     const nftContract = new web3.eth.Contract(ERC1155Abi, assetAddr);
-                    const isApproved = await nftContract.methods.isApprovedForAll(connectedAccount, playPalAddressBase).call()
+                    const isApproved = await nftContract.methods.isApprovedForAll(connectedAccount, playPalAddresses[selectedNetwork]).call()
 
                     if (!isApproved) {
                         let approval = await nftContract.methods
-                            .setApprovalForAll(playPalAddressBase, true)
+                            .setApprovalForAll(playPalAddresses[selectedNetwork], true)
                             .send ({
                                 from: connectedAccount
                             })
