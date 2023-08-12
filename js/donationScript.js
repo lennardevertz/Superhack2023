@@ -312,7 +312,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     async function callDonationFunction(amount, message, assetAddr, assetId=0) {
-        console.log(amount, message, assetAddr, assetId=0)
+        console.log(amount, message, assetAddr, assetId)
 
         let BN = web3Base.utils.BN;
 
