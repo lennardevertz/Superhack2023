@@ -110,7 +110,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     async function fetchNFTsForAddress(address) {
         // const response = await fetch(`YOUR_NFT_API_ENDPOINT/${address}`);
-        const response = [{assetAddress: "0xnftaddress", id: 1, name: "Test NFT Name", imageUrl: "https://lh3.googleusercontent.com/RRappOVtmotZGADmfAUgPaD4_Qlg5yboAffg1dg_BfherhsudhOQouR4cbtXk4muWK4ymLvEfOXYvVxds9nR7DaWjs_2pYOupSiM=w600"}, {assetAddress: "0xnftaddress", id: 1, name: "Test NFT Name", imageUrl: "https://lh3.googleusercontent.com/RRappOVtmotZGADmfAUgPaD4_Qlg5yboAffg1dg_BfherhsudhOQouR4cbtXk4muWK4ymLvEfOXYvVxds9nR7DaWjs_2pYOupSiM=w600"}];
+        const response = [{assetAddress: "0x76be3b62873462d2142405439777e971754e8e77", id: 10519, name: "Erasure", imageUrl: "https://i.seadn.io/gcs/files/b1491c1ba6e90f36c4029c59e00a4f97.png?auto=format&dpr=1&w=1000"}, {assetAddress: "0xnftaddress", id: 1, name: "Test NFT Name", imageUrl: "https://lh3.googleusercontent.com/RRappOVtmotZGADmfAUgPaD4_Qlg5yboAffg1dg_BfherhsudhOQouR4cbtXk4muWK4ymLvEfOXYvVxds9nR7DaWjs_2pYOupSiM=w600"}];
         // const data = await response.json();
         return response;
     }    
@@ -340,8 +340,9 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (assetId==0 || typeof(assetId) == 'undefined'){
                     const tokenContract = new web3.eth.Contract(ERC20Abi, assetAddr);
                     const allowance = await tokenContract.methods.allowance(connectedAccount, playPalAddressBase).call()
-                    
-                    if (BigNumber.from(allowance).lte(amount)) {
+                    const allowanceBN = new BN(allowance)
+                    const amountBN = new BN(amount)
+                    if (allowanceBN.lte(amountBN)) {
                         let approval = await tokenContract.methods
                             .approve(playPalAddressBase, BigNumber.from(amount).toString())
                             .send({
