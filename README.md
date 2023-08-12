@@ -20,8 +20,8 @@ Elevate your streamer adventure with PlayPal: your partner for earning crypto re
 | Network   |      Contract      |       Address |
 |----------|:-------------:|:------:|
 | Base | https://goerli.basescan.org/address/0x1f4e13ca70426a5423b77d8c8cd79e767c182a19 | 0x1f4e13ca70426a5423b77d8c8cd79e767c182a19 |
-| Optimism | | |
-| Zora | | |
+| Optimism | https://goerli-optimism.etherscan.io/address/0x0ad5258c3b7049e76dbcf41ed62a62ff80564f30 | 0x0Ad5258c3b7049E76DBCf41Ed62a62fF80564f30 |
+| Zora | https://testnet.explorer.zora.energy/address/0x64c47b7920B107027DedB53e3c5b070cDD14eE4D | 0x64c47b7920B107027DedB53e3c5b070cDD14eE4D |
 - Hardhat
 - Truffle Dashboard
 
