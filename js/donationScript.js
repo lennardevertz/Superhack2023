@@ -68,6 +68,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     tokenSelect.addEventListener("change", async function(event) {
         selectedToken = event.target.value;
+        assetId = 0;
         console.log("Selected token:", selectedToken);
 
         if (selectedToken.toLowerCase() === "nft") {
