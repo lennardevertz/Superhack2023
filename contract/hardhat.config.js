@@ -18,10 +18,20 @@ module.exports = {
       url: 'https://goerli.base.org',
       accounts: [""],
     },
+    optimisticGoerli: {
+      url: "https://goerli.optimism.io",
+      accounts: [""],
+    },
+    'zora-goerli': {
+      url: 'https://testnet.rpc.zora.energy/',
+      accounts: [""],
+    },
   },
   etherscan: {
     apiKey: {
-     "base-goerli": "PLACEHOLDER_STRING"
+     "base-goerli": "PLACEHOLDER_STRING",
+     "zora-goerli": "PLACEHOLDER_STRING",
+     "optimisticGoerli": ""
     },
     customChains: [
       {
@@ -30,6 +40,14 @@ module.exports = {
         urls: {
          apiURL: "https://api-goerli.basescan.org/api",
          browserURL: "https://goerli.basescan.org"
+        }
+      },
+      {
+        network: "zora-goerli",
+        chainId: 999,
+        urls: {
+         apiURL: "https://testnet.explorer.zora.energy/api",
+         browserURL: "https://testnet.explorer.zora.energy"
         }
       }
     ]
