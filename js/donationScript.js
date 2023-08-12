@@ -45,7 +45,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const networkSelect = document.getElementById("network");
     const tokenSelect = document.getElementById("token");
-    const nftSelect = document.getElementById("nftDropdown");
     const nftDropdownContainer = document.getElementById("nftDropdownContainer");
     const connectWalletButton = document.getElementById("connectWalletButton");
     const sendButton = document.getElementById("sendButton");
@@ -332,7 +331,6 @@ document.addEventListener("DOMContentLoaded", function() {
             throw new Error("Invalid network name");
         }
     
-        // Switch network if necessary
         if (currentNetworkId !== desiredNetworkId) {
     
         await provider.request({ method: "wallet_switchEthereumChain", params: [{ chainId: `0x${desiredNetworkId.toString(16)}` }] });
@@ -344,10 +342,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
         let BN = web3Base.utils.BN;
 
-        // Switch wallet to desired network
         await switchNetwork(web3, selectedNetwork, provider);
     
-        // Get contract instance
         const contractInstance = await new web3.eth.Contract(abiPlayPal, playPalAddresses[selectedNetwork]);
     
         let gas;
