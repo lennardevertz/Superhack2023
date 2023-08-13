@@ -7,20 +7,23 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="p-8 bg-gray-100">
-    <div class="max-w-md mx-auto bg-white rounded-lg shadow-md p-6">
+        <div class="text-left">
+            <a href="streamerPage.html" class="underline font-bold text-blue-700">Streamers</a>
+            <a href="donorPage.html" class="ml-2 underline font-bold text-blue-700">Donors</a>
+        </div>
+    <div class="max-w-md mx-auto bg-white rounded-lg shadow-md p-6 mt-6">
         <p class="mb-4">
-            <span class="font-bold text-lg">Interface for Streamers:</span><br>
-            Set up your streaming details below:
+            <span class="font-bold text-2xl">Create your donation link</span><br>
         </p>
         
         <div class="mb-4">
-            <label for="walletAddress" class="block font-bold mb-2">Input Wallet Address:</label>
+            <label for="walletAddress" class="block font-bold mb-2">Wallet Address</label>
             <input type="text" id="walletAddress" name="walletAddress" class="w-full px-4 py-2 border rounded focus:outline-none focus:border-blue-500">
             <p id="addressError" class="text-red-500 text-xs mt-1 hidden">Please enter a wallet address.</p>
         </div>
         
         <div class="mb-4">
-            <label class="block font-bold mb-2">Choose Donation Networks:</label>
+            <label class="block font-bold mb-2">Networks</label>
             <div class="flex">
                 <label class="inline-flex items-center mr-4">
                     <input type="checkbox" name="donationNetworks" value="Base" class="form-checkbox">
@@ -39,7 +42,7 @@
         </div>
         
         <div class="mb-4">
-            <label class="block font-bold mb-2">Choose Donation Coins:</label>
+            <label class="block font-bold mb-2">Coins</label>
             <div class="flex">
                 <label class="inline-flex items-center mr-4">
                     <input type="checkbox" name="donationCoins" value="ETH" class="form-checkbox">
@@ -60,10 +63,7 @@
         <button id="generateSnippetButton" class="mt-2 w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
             Generate Donation Banner Snippet
         </button>
-        
-        <div class="mt-4 text-center">
-            <a href="donorPage" class="underline font-bold text-blue-700">Go to Donor Page</a>
-        </div>
+
     </div>
 
     <div id="urlPopup" class="hidden fixed inset-0 flex items-center justify-center">
