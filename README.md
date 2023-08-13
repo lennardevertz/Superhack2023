@@ -10,8 +10,16 @@ Elevate your streamer adventure with PlayPal: your partner for earning crypto re
   <a href="https://lennardevertz.github.io/Superhack2023/streamerPage">Live Version</a>
 </div>
 
-## Example
-## Challenges
+## Description
+
+Imagine you're deep into a Twitch stream, watching your favorite content creator, playing your favorite game and you think, "I wish I could tip them right now to show my support." With PlayPal, you can do just that. You'll be able to send and receive crypto and NFTs, adding a whole new dimension to your Twitch experience. 
+
+We're running this on Base, Zora, and OP. Btw, have you ever heard of the web3 game Parallel? Our platform supports $PRIME, the game's native currency. So, if you're watching someone play Parallel on Twitch, you can tip them in $PRIME. It's like being part of the game! 
+
+And for the streamers out there, we've got an OBS plugin. Once you generate an OBS link by providing your wallet address, just enter the link in the url section of the browser source in OBS and voilà, everything's integrated, and you'll be able to see the tips you receive along with messages in real time. 
+
+We're here to build a community where every Twitch creator, no matter their following, can monetize their network by integrating the world of web3. 
+
 ## Tech Stack
 
 - Smart Contracts
