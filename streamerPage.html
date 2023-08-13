@@ -7,13 +7,13 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="p-8 bg-gray-100">
-        <div class="text-left">
+        <div class="text-left h-10">
             <a href="streamerPage.html" class="underline font-bold text-blue-700">Streamers</a>
             <a href="donorPage.html" class="ml-2 underline font-bold text-blue-700">Donors</a>
         </div>
     <div class="max-w-md mx-auto bg-white rounded-lg shadow-md p-6 mt-6">
         <p class="mb-4">
-            <span class="font-bold text-2xl">Create your donation link</span><br>
+            <span class="font-bold text-2xl">Start accepting donations</span><br>
         </p>
         
         <div class="mb-4">
@@ -56,12 +56,12 @@
             <p id="coinError" class="text-red-500 text-xs mt-1 hidden">Please select at least one coin.</p>
         </div>
         
-        <button id="generateUrlButton" class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-            Generate OBS URL
-        </button>
-        
         <button id="generateSnippetButton" class="mt-2 w-full bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-            Generate Donation Banner Snippet
+            Generate Donation Link
+        </button>
+
+        <button id="generateUrlButton" class="mt-2 w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+            Generate OBS Link
         </button>
 
     </div>
